@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -14,10 +16,10 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
     const [showPassword, setShowPassword] = useState(false);
 
     return (
-      <div className='relative'>
+      <div className='relative w-full'>
         <Input
           type={showPassword ? 'text' : 'password'}
-          className={cn('pr-10', className)}
+          className={cn('pr-10 w-full', className)}
           ref={ref}
           {...props}
         />
