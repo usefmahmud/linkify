@@ -97,6 +97,6 @@ const isEmployerRoute = (path: string) => {
 };
 
 const isSharedRoute = (path: string) => {
-  const sharedPaths = ['/dashboard', '/profile'];
+  const sharedPaths = ['/jobs', '/profile'];
   return sharedPaths.some((p) => path.startsWith(p));
 };

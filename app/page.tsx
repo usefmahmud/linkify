@@ -1,8 +1,7 @@
 import LandingPage from '@/components/features/landing/landing';
-import { Button } from '@/components/ui/button';
 import { userRole } from '@/types/user';
 import { createClient } from '@/utils/supabase/server';
-import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 export default async function Home() {
   const supabase = await createClient();
@@ -17,7 +16,7 @@ export default async function Home() {
   }
 
   if (role === 'job-seeker') {
-    return <>Job Seeker</>;
+    redirect('/jobs');
   }
 
   return <LandingPage />;
