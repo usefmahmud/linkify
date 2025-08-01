@@ -23,7 +23,7 @@ export const useRegistrationFlowStore = create<RegistrationFlowStore>(
     userRole: null,
     setUserRole: (role) => set({ userRole: role }),
 
-    currentStep: 'data',
+    currentStep: 'role',
     setCurrentStep: (step) => set({ currentStep: step }),
   })
 );
