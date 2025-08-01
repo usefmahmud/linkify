@@ -1,15 +1,21 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useRegistrationFlowStore } from '@/stores/auth/registration-flow.store';
+import { AuthFlowStep } from '@/types/auth-flow';
 import { userRole } from '@/types/user';
 import { BriefcaseBusiness, Building2 } from 'lucide-react';
 import React, { useState } from 'react';
 
-const RoleStep = () => {
-  const [selectedRole, setSelectedRole] = useState<userRole>('job-seeker');
+interface RoleStepProps {
+  setCurrentStep: (step: AuthFlowStep) => void;
+}
+
+const RoleStep = ({ setCurrentStep }: RoleStepProps) => {
   const setUserRole = useRegistrationFlowStore((state) => state.setUserRole);
-  const setCurrentStep = useRegistrationFlowStore(
-    (state) => state.setCurrentStep
+  const userRole = useRegistrationFlowStore((state) => state.userRole);
+
+  const [selectedRole, setSelectedRole] = useState<userRole>(
+    userRole || 'job-seeker'
   );
 
   const handleSubmit = () => {

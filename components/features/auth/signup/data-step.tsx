@@ -12,14 +12,22 @@ import {
 import { Input } from '@/components/ui/input';
 import { signupSchema, SignupSchema } from '@/schemas/auth/signup.schema';
 import { useRegistrationFlowStore } from '@/stores/auth/registration-flow.store';
+import { AuthFlowStep } from '@/types/auth-flow';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-const DataStep = () => {
+interface DataStepProps {
+  setCurrentStep: (step: AuthFlowStep) => void;
+}
+
+const DataStep: React.FC<DataStepProps> = ({ setCurrentStep }) => {
+  const setUserData = useRegistrationFlowStore((state) => state.setUserData);
+  const userData = useRegistrationFlowStore((state) => state.userData);
+
   const form = useForm<SignupSchema>({
     resolver: zodResolver(signupSchema),
-    defaultValues: {
+    defaultValues: userData || {
       firstName: '',
       lastName: '',
       email: '',
@@ -27,11 +35,6 @@ const DataStep = () => {
       confirmPassword: '',
     },
   });
-
-  const setUserData = useRegistrationFlowStore((state) => state.setUserData);
-  const setCurrentStep = useRegistrationFlowStore(
-    (state) => state.setCurrentStep
-  );
 
   const handleFormSubmit = (data: SignupSchema) => {
     setUserData(data);

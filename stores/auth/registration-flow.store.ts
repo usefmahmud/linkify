@@ -10,9 +10,6 @@ interface RegistrationFlowStore {
 
   userRole: userRole | null;
   setUserRole: (role: userRole) => void;
-
-  currentStep: Steps;
-  setCurrentStep: (step: Steps) => void;
 }
 
 export const useRegistrationFlowStore = create<RegistrationFlowStore>(
@@ -22,8 +19,5 @@ export const useRegistrationFlowStore = create<RegistrationFlowStore>(
 
     userRole: null,
     setUserRole: (role) => set({ userRole: role }),
-
-    currentStep: 'role',
-    setCurrentStep: (step) => set({ currentStep: step }),
   })
 );
