@@ -1,25 +1,14 @@
 'use client';
 
 import React from 'react';
-import DataStep from './data-step';
+import SignupForm from './signup-form';
 import Link from 'next/link';
-import RoleStep from './role-step';
-import { useQueryState, parseAsStringLiteral } from 'nuqs';
-import { AuthFlowSteps } from '@/types/auth-flow';
 
 const Signup = () => {
-  const [currentStep, setCurrentStep] = useQueryState(
-    'step',
-    parseAsStringLiteral(AuthFlowSteps).withDefault('data').withOptions({
-      history: 'push',
-    })
-  );
-
   return (
     <div className='flex flex-col gap-4'>
       <div className='bg-background max-w-lg rounded-md p-6 shadow-md'>
-        {currentStep === 'data' && <DataStep setCurrentStep={setCurrentStep} />}
-        {currentStep === 'role' && <RoleStep />}
+        <SignupForm />
       </div>
 
       <div className='flex justify-center'>

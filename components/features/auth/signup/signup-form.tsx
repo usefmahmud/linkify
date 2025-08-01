@@ -1,4 +1,5 @@
 'use client';
+import { signup } from '@/api/auth/signup';
 import PasswordInput from '@/components/custom/password-input';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,24 +11,19 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
 import { signupSchema, SignupSchema } from '@/schemas/auth/signup.schema';
-import { useRegistrationFlowStore } from '@/stores/auth/registration-flow.store';
-import { AuthFlowStep } from '@/types/auth-flow';
+
+import { userRole } from '@/types/user';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import { BriefcaseBusiness, Building2, Loader2 } from 'lucide-react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-interface DataStepProps {
-  setCurrentStep: (step: AuthFlowStep) => void;
-}
-
-const DataStep: React.FC<DataStepProps> = ({ setCurrentStep }) => {
-  const setUserData = useRegistrationFlowStore((state) => state.setUserData);
-  const userData = useRegistrationFlowStore((state) => state.userData);
-
+const SignupForm = () => {
   const form = useForm<SignupSchema>({
     resolver: zodResolver(signupSchema),
-    defaultValues: userData || {
+    defaultValues: {
       firstName: '',
       lastName: '',
       email: '',
@@ -35,10 +31,11 @@ const DataStep: React.FC<DataStepProps> = ({ setCurrentStep }) => {
       confirmPassword: '',
     },
   });
+  const [selectedRole, setSelectedRole] = useState<userRole>('job-seeker');
 
-  const handleFormSubmit = (data: SignupSchema) => {
-    setUserData(data);
-    setCurrentStep('role');
+  const handleFormSubmit = async (data: SignupSchema) => {
+    const user = await signup(data, selectedRole);
+    console.log(user);
   };
 
   return (
@@ -128,8 +125,39 @@ const DataStep: React.FC<DataStepProps> = ({ setCurrentStep }) => {
             />
           </div>
 
+          <div className='flex gap-4'>
+            <div
+              className={cn(
+                'flex flex-1 cursor-pointer flex-col items-center justify-center gap-2 rounded-md border p-6 text-gray-500 transition-colors duration-100',
+                selectedRole === 'job-seeker' && 'border-black text-black'
+              )}
+              onClick={() => setSelectedRole('job-seeker')}
+              role='button'
+            >
+              <BriefcaseBusiness className='size-8' />
+              <p className='font-bold'>Job Seeker</p>
+            </div>
+
+            <div
+              className={cn(
+                'flex flex-1 cursor-pointer flex-col items-center justify-center gap-2 rounded-md border p-6 text-gray-500 transition-colors duration-100',
+                selectedRole === 'employer' && 'border-black text-black'
+              )}
+              onClick={() => setSelectedRole('employer')}
+              role='button'
+            >
+              <Building2 className='size-8' />
+              <p className='font-bold'>Employer</p>
+            </div>
+          </div>
+
           <div className='flex justify-center'>
-            <Button className='px-10'>Next</Button>
+            <Button className='px-10' disabled={form.formState.isSubmitting}>
+              Signup
+              {form.formState.isSubmitting && (
+                <Loader2 className='ml-2 h-4 w-4 animate-spin' />
+              )}
+            </Button>
           </div>
         </form>
       </Form>
@@ -137,4 +165,4 @@ const DataStep: React.FC<DataStepProps> = ({ setCurrentStep }) => {
   );
 };
 
-export default DataStep;
+export default SignupForm;

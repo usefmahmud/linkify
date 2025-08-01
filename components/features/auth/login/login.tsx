@@ -1,5 +1,6 @@
 'use client';
 
+import { login } from '@/api/auth/login';
 import PasswordInput from '@/components/custom/password-input';
 import { Button } from '@/components/ui/button';
 import {
@@ -28,11 +29,8 @@ const Login = () => {
     },
   });
 
-  const router = useRouter();
-
-  const handleFormSubmit = (credentials: LoginSchema) => {
-    toast.success('Logged in successfully');
-    router.push('/dashboard');
+  const handleFormSubmit = async (credentials: LoginSchema) => {
+    const user = await login(credentials);
   };
 
   return (
