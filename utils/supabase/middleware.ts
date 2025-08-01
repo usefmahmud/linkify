@@ -1,4 +1,5 @@
 import { createServerClient } from '@supabase/ssr';
+import { INTERNALS } from 'next/dist/server/web/spec-extension/request';
 import { NextResponse, type NextRequest } from 'next/server';
 
 export async function updateSession(request: NextRequest) {
@@ -33,31 +34,69 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // landing page
-  if (request.nextUrl.pathname === '/') {
+  const pathname = request.nextUrl.pathname;
+
+  if (pathname === '/') {
     return supabaseResponse;
   }
 
-  if (!user && !isAuthRoute(request.nextUrl.pathname)) {
+  if (!user && !isAuthRoute(pathname)) {
     const url = request.nextUrl.clone();
     url.pathname = '/auth/login';
     return NextResponse.redirect(url);
   }
 
-  // IMPORTANT: You *must* return the supabaseResponse object as it is.
-  // If you're creating a new response object with NextResponse.next() make sure to:
-  // 1. Pass the request in it, like so:
-  //    const myNewResponse = NextResponse.next({ request })
-  // 2. Copy over the cookies, like so:
-  //    myNewResponse.cookies.setAll(supabaseResponse.cookies.getAll())
-  // 3. Change the myNewResponse object to fit your needs, but avoid changing
-  //    the cookies!
-  // 4. Finally:
-  //    return myNewResponse
-  // If this is not done, you may be causing the browser and server to go out
-  // of sync and terminate the user's session prematurely!
+  if (user && isAuthRoute(pathname)) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/';
+    return NextResponse.redirect(url);
+  }
 
+  if (user) {
+    const role = user?.user_metadata.role as 'job-seeker' | 'employer';
+
+    if (isSharedRoute(pathname)) {
+      return supabaseResponse;
+    }
+
+    if (role === 'job-seeker') {
+      if (!isSharedRoute && !isJobSeekerRoute(pathname)) {
+        const url = request.nextUrl.clone();
+        url.pathname = '/job-seeker/dashboard';
+        return NextResponse.redirect(url);
+      }
+    }
+
+    if (role === 'employer') {
+      if (!isSharedRoute && !isEmployerRoute(pathname)) {
+        const url = request.nextUrl.clone();
+        url.pathname = '/employer/dashboard';
+        return NextResponse.redirect(url);
+      }
+    }
+  }
   return supabaseResponse;
 }
 
 const isAuthRoute = (path: string) => path.startsWith('/auth');
+
+const isJobSeekerRoute = (path: string) => {
+  const jobSeekerPaths = ['/jobs', '/applications', '/saved-jobs'];
+  return jobSeekerPaths.some((p) => path.startsWith(p)) || path === '/jobs';
+};
+
+const isEmployerRoute = (path: string) => {
+  const employerPaths = [
+    '/jobs/new',
+    '/jobs/manage',
+    '/candidates',
+    '/company',
+    '/applications/received',
+  ];
+  return employerPaths.some((p) => path.startsWith(p));
+};
+
+const isSharedRoute = (path: string) => {
+  const sharedPaths = ['/dashboard', '/profile'];
+  return sharedPaths.some((p) => path.startsWith(p));
+};
