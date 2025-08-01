@@ -17,10 +17,13 @@ import { signupSchema, SignupSchema } from '@/schemas/auth/signup.schema';
 import { userRole } from '@/types/user';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { BriefcaseBusiness, Building2, Loader2 } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 const SignupForm = () => {
+  const searchParams = useSearchParams();
+
   const form = useForm<SignupSchema>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -31,7 +34,10 @@ const SignupForm = () => {
       confirmPassword: '',
     },
   });
-  const [selectedRole, setSelectedRole] = useState<userRole>('job-seeker');
+  const [selectedRole, setSelectedRole] = useState<userRole>(() => {
+    const role = searchParams.get('role');
+    return role === 'employer' || role === 'job-seeker' ? role : 'job-seeker';
+  });
 
   const handleFormSubmit = async (data: SignupSchema) => {
     const user = await signup(data, selectedRole);

@@ -36,7 +36,7 @@ const Login = () => {
 
   return (
     <div className='flex w-full max-w-lg flex-col gap-4'>
-      <div className='bg-background rounded-md p-6 shadow-md'>
+      <div className='bg-muted/20 rounded-md p-6 box-shadow'>
         <h1 className='mb-8 text-center text-2xl font-bold'>
           Login to <b className='text-violet-800'>Linkify</b>
         </h1>

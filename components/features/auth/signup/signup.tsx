@@ -5,9 +5,10 @@ import SignupForm from './signup-form';
 import Link from 'next/link';
 
 const Signup = () => {
+  
   return (
     <div className='flex flex-col gap-4'>
-      <div className='bg-background max-w-lg rounded-md p-6 shadow-md'>
+      <div className='bg-muted/20 box-shadow max-w-lg rounded-md p-6 shadow-md'>
         <SignupForm />
       </div>
 
