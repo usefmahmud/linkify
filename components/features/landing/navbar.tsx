@@ -16,11 +16,12 @@ const Navbar = () => {
         <Button
           variant='ghost'
           className='h-full rounded-full px-6 hover:bg-transparent'
+          asChild
         >
           <Link href='/auth/signup'>Signup</Link>
         </Button>
 
-        <Button className='h-full rounded-full px-6'>
+        <Button className='h-full rounded-full px-6' asChild>
           <Link href='/auth/login'>Login</Link>
         </Button>
       </div>
