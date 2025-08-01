@@ -4,15 +4,15 @@ import { useRegistrationFlowStore } from '@/stores/auth/registration-flow.store'
 import { AuthFlowStep } from '@/types/auth-flow';
 import { userRole } from '@/types/user';
 import { BriefcaseBusiness, Building2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 
-interface RoleStepProps {
-  setCurrentStep: (step: AuthFlowStep) => void;
-}
-
-const RoleStep = ({ setCurrentStep }: RoleStepProps) => {
+const RoleStep = () => {
   const setUserRole = useRegistrationFlowStore((state) => state.setUserRole);
   const userRole = useRegistrationFlowStore((state) => state.userRole);
+
+  const router = useRouter();
 
   const [selectedRole, setSelectedRole] = useState<userRole>(
     userRole || 'job-seeker'
@@ -20,6 +20,8 @@ const RoleStep = ({ setCurrentStep }: RoleStepProps) => {
 
   const handleSubmit = () => {
     setUserRole(selectedRole);
+    toast.success('Signed Up Successfully');
+    router.push('/auth/login');
   };
 
   return (

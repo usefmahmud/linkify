@@ -11,7 +11,7 @@ const Signup = () => {
   const [currentStep, setCurrentStep] = useQueryState(
     'step',
     parseAsStringLiteral(AuthFlowSteps).withDefault('data').withOptions({
-      history: 'push'
+      history: 'push',
     })
   );
 
@@ -19,7 +19,7 @@ const Signup = () => {
     <div className='flex flex-col gap-4'>
       <div className='bg-background max-w-lg rounded-md p-6 shadow-md'>
         {currentStep === 'data' && <DataStep setCurrentStep={setCurrentStep} />}
-        {currentStep === 'role' && <RoleStep setCurrentStep={setCurrentStep} />}
+        {currentStep === 'role' && <RoleStep />}
       </div>
 
       <div className='flex justify-center'>
