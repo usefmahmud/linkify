@@ -1,16 +1,16 @@
+'use client';
+
 import React from 'react';
-import SignupForm from './signup-form';
+import DataStep from './data-step';
 import Link from 'next/link';
+import { useRegistrationFlowStore } from '@/stores/auth/registration-flow.store';
 
 const Signup = () => {
+  const currentStep = useRegistrationFlowStore((state) => state.currentStep);
   return (
     <div className='flex flex-col gap-4'>
       <div className='bg-background max-w-lg rounded-md p-6 shadow-md'>
-        <h1 className='mb-4 text-center text-2xl font-bold'>
-          Sign Up to <b className='text-violet-800'>Linkify</b>
-        </h1>
-
-        <SignupForm />
+        {currentStep === 'data' && <DataStep />}
       </div>
 
       <div className='flex justify-center'>

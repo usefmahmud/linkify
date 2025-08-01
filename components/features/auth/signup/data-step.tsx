@@ -11,11 +11,12 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { signupSchema, SignupSchema } from '@/schemas/auth/signup.schema';
+import { useRegistrationFlowStore } from '@/stores/auth/registration-flow.store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-const SignupForm = () => {
+const DataStep = () => {
   const form = useForm<SignupSchema>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -26,11 +27,26 @@ const SignupForm = () => {
       confirmPassword: '',
     },
   });
+
+  const setUserData = useRegistrationFlowStore((state) => state.setUserData);
+  const setCurrentStep = useRegistrationFlowStore(
+    (state) => state.setCurrentStep
+  );
+
+  const handleFormSubmit = (data: SignupSchema) => {
+    setUserData(data);
+    setCurrentStep('role');
+  };
+
   return (
     <div>
+      <h1 className='mb-8 text-center text-2xl font-bold'>
+        Sign Up to <b className='text-violet-800'>Linkify</b>
+      </h1>
+
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit((data) => console.log(data))}
+          onSubmit={form.handleSubmit(handleFormSubmit)}
           className='flex flex-col gap-6'
         >
           <div className='flex items-start gap-4'>
@@ -118,4 +134,4 @@ const SignupForm = () => {
   );
 };
 
-export default SignupForm;
+export default DataStep;
