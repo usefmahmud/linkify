@@ -1,9 +1,11 @@
 import { SignupSchema } from '@/schemas/auth/signup.schema';
 import { userRole } from '@/types/user';
 import toast from 'react-hot-toast';
-import { supabase } from '@/utils/supabase/supabase';
+import { createClient } from '@/utils/supabase/client';
 
 export const signup = async (credentials: SignupSchema, role: userRole) => {
+  const supabase = await createClient();
+
   const { data, error } = await supabase.auth.signUp({
     email: credentials.email,
     password: credentials.password,

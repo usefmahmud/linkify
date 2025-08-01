@@ -1,18 +1,24 @@
+import LandingPage from '@/components/features/landing/landing';
 import { Button } from '@/components/ui/button';
-import Image from 'next/image';
+import { userRole } from '@/types/user';
+import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 
-export default function Home() {
-  return (
-    <div className='flex h-screen items-center justify-center'>
-      <div className='flex flex-col items-center gap-4'>
-        <h1 className='text-4xl font-black'>Welcome To Linkify</h1>
-        <div className='flex'>
-          <Button size='lg' className='px-10' asChild>
-            <Link href='/auth/signup'>Get Started</Link>
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
+export default async function Home() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const role = ((await user?.user_metadata.role) as userRole) || null;
+
+  if (role === 'employer') {
+    return <>Employer</>;
+  }
+
+  if (role === 'job-seeker') {
+    return <>Job Seeker</>;
+  }
+
+  return <LandingPage />;
 }
