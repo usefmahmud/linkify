@@ -129,7 +129,7 @@ const DataStep: React.FC<DataStepProps> = ({ setCurrentStep }) => {
           </div>
 
           <div className='flex justify-center'>
-            <Button className='px-10'>Singup</Button>
+            <Button className='px-10'>Next</Button>
           </div>
         </form>
       </Form>

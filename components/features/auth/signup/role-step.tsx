@@ -20,7 +20,6 @@ const RoleStep = ({ setCurrentStep }: RoleStepProps) => {
 
   const handleSubmit = () => {
     setUserRole(selectedRole);
-    setCurrentStep('info');
   };
 
   return (
@@ -53,7 +52,7 @@ const RoleStep = ({ setCurrentStep }: RoleStepProps) => {
 
       <div className='justify-center'>
         <Button onClick={handleSubmit} className='px-10'>
-          Next Step
+          Finish
         </Button>
       </div>
     </div>
