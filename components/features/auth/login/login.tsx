@@ -14,6 +14,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { loginSchema, LoginSchema } from '@/schemas/auth/login.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -74,7 +75,12 @@ const Login = () => {
             />
 
             <div className='flex justify-center'>
-              <Button className='px-10'>Login</Button>
+              <Button className='px-10' disabled={form.formState.isSubmitting}>
+                Login
+                {form.formState.isSubmitting && (
+                  <Loader2 className='ml-2 animate-spin' />
+                )}
+              </Button>
             </div>
           </form>
         </Form>
