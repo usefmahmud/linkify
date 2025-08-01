@@ -5,6 +5,7 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import AppSidebarContent from './app-sidebar-content';
 import AppSidebarHeader from './app-sidebar-header';
+import toast from 'react-hot-toast';
 
 const AppSidebar = async () => {
   const supabase = await createClient();
@@ -16,13 +17,14 @@ const AppSidebar = async () => {
     redirect('/auth/login');
   }
 
+
   return (
     <Sidebar className='' variant='inset'>
       <AppSidebarHeader role={user.user_metadata.role} />
 
       <AppSidebarContent role={user.user_metadata.role} />
 
-      <AppSidebarFooter user={user} />
+      <AppSidebarFooter user={user}  />
     </Sidebar>
   );
 };

@@ -1,3 +1,4 @@
+'use client';
 import {
   DropdownMenu,
   DropdownMenuGroup,
@@ -13,18 +14,33 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { createClient } from '@/utils/supabase/client';
 import { User as UserType } from '@supabase/supabase-js';
 import { EllipsisVertical, LogOut, Settings, User } from 'lucide-react';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import React from 'react';
+import toast from 'react-hot-toast';
 
 interface AppSidebarFooterProps {
   user: UserType;
 }
 
 const AppSidebarFooter = ({ user }: AppSidebarFooterProps) => {
+  const name =
+    user?.user_metadata.first_name + ' ' + user?.user_metadata.last_name || '';
 
-  const name = user?.user_metadata.first_name + ' ' + user?.user_metadata.last_name || '';
+  const handleLogout = async () => {
+    const supabase = await createClient();
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast.error('Failed to log out. Please try again.');
+      return;
+    }
+
+    toast.success('Logged out successfully.');
+    redirect('/');
+  };
   return (
     <SidebarFooter>
       <SidebarMenu>
@@ -78,7 +94,10 @@ const AppSidebarFooter = ({ user }: AppSidebarFooterProps) => {
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem variant='destructive'>
+              <DropdownMenuItem
+                variant='destructive'
+                onClick={() => handleLogout()}
+              >
                 <LogOut />
                 Log out
               </DropdownMenuItem>
