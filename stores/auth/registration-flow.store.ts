@@ -2,8 +2,6 @@ import { SignupSchema } from '@/schemas/auth/signup.schema';
 import { userRole } from '@/types/user';
 import { create } from 'zustand';
 
-type Steps = 'data' | 'role' | 'info';
-
 interface RegistrationFlowStore {
   userData: SignupSchema | null;
   setUserData: (user: SignupSchema) => void;
