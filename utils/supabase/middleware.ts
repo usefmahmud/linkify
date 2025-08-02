@@ -60,17 +60,17 @@ export async function updateSession(request: NextRequest) {
     }
 
     if (role === 'job-seeker') {
-      if (!isSharedRoute && !isJobSeekerRoute(pathname)) {
+      if (!isSharedRoute(pathname) && !isJobSeekerRoute(pathname)) {
         const url = request.nextUrl.clone();
-        url.pathname = '/job-seeker/dashboard';
+        url.pathname = '/jobs';
         return NextResponse.redirect(url);
       }
     }
 
     if (role === 'employer') {
-      if (!isSharedRoute && !isEmployerRoute(pathname)) {
+      if (!isSharedRoute(pathname) && !isEmployerRoute(pathname)) {
         const url = request.nextUrl.clone();
-        url.pathname = '/employer/dashboard';
+        url.pathname = '/my-jobs';
         return NextResponse.redirect(url);
       }
     }
@@ -87,8 +87,8 @@ const isJobSeekerRoute = (path: string) => {
 
 const isEmployerRoute = (path: string) => {
   const employerPaths = [
+    '/my-jobs',
     '/jobs/new',
-    '/jobs/manage',
     '/candidates',
     '/company',
     '/applications/received',
@@ -97,6 +97,6 @@ const isEmployerRoute = (path: string) => {
 };
 
 const isSharedRoute = (path: string) => {
-  const sharedPaths = ['/jobs', '/profile'];
+  const sharedPaths = ['/profile'];
   return sharedPaths.some((p) => path.startsWith(p));
 };

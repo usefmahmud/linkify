@@ -11,8 +11,10 @@ export default async function Home() {
 
   const role = ((await user?.user_metadata.role) as userRole) || null;
 
+  console.log(role);
+
   if (role === 'employer') {
-    return <>Employer</>;
+    redirect('/my-jobs');
   }
 
   if (role === 'job-seeker') {

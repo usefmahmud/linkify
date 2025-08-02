@@ -7,7 +7,7 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { userRole } from '@/types/user';
-import { BriefcaseBusiness, FileText } from 'lucide-react';
+import { BriefcaseBusiness, FilePlus, FileText } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
@@ -30,6 +30,11 @@ const AppSidebarContent = ({ role }: AppSidebarContentProps) => {
         return [
           { title: 'Jobs', href: '/jobs', icon: <BriefcaseBusiness /> },
           { title: 'Applications', href: '/applications', icon: <FileText /> },
+        ];
+      case 'employer':
+        return [
+          { title: 'My Jobs', href: '/my-jobs', icon: <BriefcaseBusiness /> },
+          { title: 'New Job', href: '/jobs/new', icon: <FilePlus /> },
         ];
 
       default:
