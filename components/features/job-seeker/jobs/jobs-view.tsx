@@ -8,9 +8,9 @@ import { useJobSearchFilter } from '@/hooks/jobs/use-job-search-filter';
 
 const JobsView = () => {
   const [jobs, setJobs] = useState<GetJobsResponse['jobs']>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const { filters, updateFilters, updateFiltersWithPageReset, getJobsParams } =
+  const { filters, updateFiltersWithPageReset, getJobsParams } =
     useJobSearchFilter();
 
   useEffect(() => {
@@ -48,7 +48,15 @@ const JobsView = () => {
         updateFilters={updateFiltersWithPageReset}
       />
 
-      <JobsList jobs={jobs} />
+      {loading ? (
+        <div className='py-12 text-center'>
+          <div className='text-lg text-gray-500'>Loading...</div>
+        </div>
+      ) : (
+        <div className='mt-12'>
+          <JobsList jobs={jobs} />
+        </div>
+      )}
     </div>
   );
 };

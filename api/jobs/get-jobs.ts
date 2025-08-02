@@ -90,6 +90,6 @@ export const getJobs = async (
     jobs: (jobs as GetJobsResponse['jobs']) || [],
     page,
     limit,
-    total: jobs.length, // This should ideally be the total count from a separate query
+    total: jobs.length, 
   };
 };

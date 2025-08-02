@@ -28,6 +28,15 @@ interface JobsSearchProps {
 
 const JobsSearch = ({ filters, updateFilters }: JobsSearchProps) => {
   const [searchInput, setSearchInput] = useState(filters.search || '');
+  const [locationInput, setLocationInput] = useState(filters.location || '');
+
+  React.useEffect(() => {
+    setSearchInput(filters.search || '');
+  }, [filters.search]);
+
+  React.useEffect(() => {
+    setLocationInput(filters.location || '');
+  }, [filters.location]);
 
   const debouncedSearch = useCallback(
     (() => {
@@ -42,10 +51,29 @@ const JobsSearch = ({ filters, updateFilters }: JobsSearchProps) => {
     [updateFilters]
   );
 
+  const debouncedLocation = useCallback(
+    (() => {
+      let timeoutId: NodeJS.Timeout;
+      return (value: string) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          updateFilters({ location: value || null });
+        }, 300);
+      };
+    })(),
+    [updateFilters]
+  );
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchInput(value);
     debouncedSearch(value);
+  };
+
+  const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setLocationInput(value);
+    debouncedLocation(value);
   };
   return (
     <div className='w-full space-y-6 rounded-lg border bg-white p-6 shadow-sm'>
@@ -64,70 +92,93 @@ const JobsSearch = ({ filters, updateFilters }: JobsSearchProps) => {
           <MapPin className='absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400' />
           <Input
             placeholder='Location'
-            value={filters.location || ''}
-            onChange={(e) =>
-              updateFilters({ location: e.target.value || null })
-            }
+            value={locationInput}
+            onChange={handleLocationChange}
             className='h-12 pl-10 text-base'
           />
         </div>
       </div>
 
       <div className='flex flex-wrap gap-3'>
-        <Select
-          value={filters.jobLevel || 'all'}
-          onValueChange={(value) =>
-            updateFilters({ jobLevel: value === 'all' ? null : value })
-          }
-        >
-          <SelectTrigger className=''>
-            <Briefcase className='mr-2 h-4 w-4' />
-            <SelectValue placeholder='Job level' />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value='all'>All Levels</SelectItem>
-            <SelectItem value='entry-level'>Entry Level</SelectItem>
-            <SelectItem value='junior'>Junior</SelectItem>
-            <SelectItem value='mid-level'>Mid Level</SelectItem>
-            <SelectItem value='senior'>Senior</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className='relative'>
+          <Select
+            value={filters.jobLevel || ''}
+            onValueChange={(value) =>
+              updateFilters({ jobLevel: value || null })
+            }
+          >
+            <SelectTrigger className={filters.jobLevel ? 'pr-8' : ''}>
+              <Briefcase className='mr-2 h-4 w-4' />
+              <SelectValue placeholder='Job level' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value='entry-level'>Entry Level</SelectItem>
+              <SelectItem value='junior'>Junior</SelectItem>
+              <SelectItem value='mid-level'>Mid Level</SelectItem>
+              <SelectItem value='senior'>Senior</SelectItem>
+            </SelectContent>
+          </Select>
+          {filters.jobLevel && (
+            <button
+              onClick={() => updateFilters({ jobLevel: null })}
+              className='absolute top-1/2 right-2 -translate-y-1/2 text-gray-400 hover:text-gray-600'
+            >
+              <X className='h-4 w-4' />
+            </button>
+          )}
+        </div>
 
-        <Select
-          value={filters.jobType || 'all'}
-          onValueChange={(value) =>
-            updateFilters({ jobType: value === 'all' ? null : value })
-          }
-        >
-          <SelectTrigger className=''>
-            <Building className='mr-2 h-4 w-4' />
-            <SelectValue placeholder='Job type' />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value='all'>All Types</SelectItem>
-            <SelectItem value='full-time'>Full Time</SelectItem>
-            <SelectItem value='part-time'>Part Time</SelectItem>
-            <SelectItem value='freelance'>Freelance</SelectItem>
-            <SelectItem value='contract'>Contract</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className='relative'>
+          <Select
+            value={filters.jobType || ''}
+            onValueChange={(value) => updateFilters({ jobType: value || null })}
+          >
+            <SelectTrigger className={filters.jobType ? 'pr-8' : ''}>
+              <Building className='mr-2 h-4 w-4' />
+              <SelectValue placeholder='Job type' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value='full-time'>Full Time</SelectItem>
+              <SelectItem value='part-time'>Part Time</SelectItem>
+              <SelectItem value='freelance'>Freelance</SelectItem>
+              <SelectItem value='contract'>Contract</SelectItem>
+            </SelectContent>
+          </Select>
+          {filters.jobType && (
+            <button
+              onClick={() => updateFilters({ jobType: null })}
+              className='absolute top-1/2 right-2 -translate-y-1/2 text-gray-400 hover:text-gray-600'
+            >
+              <X className='h-4 w-4' />
+            </button>
+          )}
+        </div>
 
-        <Select
-          value={filters.workType || 'all'}
-          onValueChange={(value) =>
-            updateFilters({ workType: value === 'all' ? null : value })
-          }
-        >
-          <SelectTrigger className=''>
-            <SelectValue placeholder='Work type' />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value='all'>All Work Types</SelectItem>
-            <SelectItem value='remote'>Remote</SelectItem>
-            <SelectItem value='on-site'>On-site</SelectItem>
-            <SelectItem value='hybrid'>Hybrid</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className='relative'>
+          <Select
+            value={filters.workType || ''}
+            onValueChange={(value) =>
+              updateFilters({ workType: value || null })
+            }
+          >
+            <SelectTrigger className={filters.workType ? 'pr-8' : ''}>
+              <SelectValue placeholder='Work type' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value='remote'>Remote</SelectItem>
+              <SelectItem value='on-site'>On-site</SelectItem>
+              <SelectItem value='hybrid'>Hybrid</SelectItem>
+            </SelectContent>
+          </Select>
+          {filters.workType && (
+            <button
+              onClick={() => updateFilters({ workType: null })}
+              className='absolute top-1/2 right-2 -translate-y-1/2 text-gray-400 hover:text-gray-600'
+            >
+              <X className='h-4 w-4' />
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
