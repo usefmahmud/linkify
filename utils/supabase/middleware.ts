@@ -81,7 +81,7 @@ export async function updateSession(request: NextRequest) {
 const isAuthRoute = (path: string) => path.startsWith('/auth');
 
 const isJobSeekerRoute = (path: string) => {
-  const jobSeekerPaths = ['/jobs', '/applications', '/saved-jobs'];
+  const jobSeekerPaths = ['/jobs', '/my-applications', '/saved-jobs'];
   return jobSeekerPaths.some((p) => path.startsWith(p)) || path === '/jobs';
 };
 

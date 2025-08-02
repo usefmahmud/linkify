@@ -29,7 +29,7 @@ const AppSidebarContent = ({ role }: AppSidebarContentProps) => {
       case 'job-seeker':
         return [
           { title: 'Jobs', href: '/jobs', icon: <BriefcaseBusiness /> },
-          { title: 'Applications', href: '/applications', icon: <FileText /> },
+          { title: 'My Applications', href: '/my-applications', icon: <FileText /> },
         ];
       case 'employer':
         return [

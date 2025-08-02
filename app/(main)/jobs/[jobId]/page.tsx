@@ -1,7 +1,7 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 import { getJobById } from '@/api/jobs/get-job-by-id';
-import JobDetailsView from '@/components/features/job-seeker/jobs/job-details-view';
+import JobDetailsView from '@/components/features/job-seeker/job-details/job-details-view';
 
 interface JobPageProps {
   params: Promise<{ jobId: string }>;
