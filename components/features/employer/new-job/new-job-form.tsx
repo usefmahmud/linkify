@@ -22,6 +22,8 @@ import { useForm } from 'react-hook-form';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
+import { postNewJob } from '@/api/jobs/post-new-job';
+import { redirect } from 'next/navigation';
 
 const NewJobForm = () => {
   const form = useForm<NewJobSchema>({
@@ -35,12 +37,14 @@ const NewJobForm = () => {
       description: '',
       salary: 0,
       jobLevel: undefined,
-      skills: [],
     },
   });
 
   const handleFormSubmit = async (data: NewJobSchema) => {
-    // Handle form submission
+    console.log(data)
+    const jobData = await postNewJob(data);
+
+    redirect(`/jobs/${jobData?.id}`);
   };
 
   return (
@@ -218,6 +222,7 @@ const NewJobForm = () => {
           <Button
             className='px-12 font-semibold'
             disabled={form.formState.isSubmitting}
+            type='submit'
           >
             Post Job
             {form.formState.isSubmitting && (

@@ -1,3 +1,4 @@
+import { Constants } from '@/types/database.types';
 import z from 'zod';
 
 export const newJobSchema = z.object({
@@ -8,11 +9,11 @@ export const newJobSchema = z.object({
 
   department: z.string().min(1, 'Department is required'),
 
-  jobType: z.enum(['full-time', 'part-time', 'freelance'], {
+  jobType: z.enum(Constants.public.Enums.job_type, {
     error: 'Job type is required',
   }),
 
-  workType: z.enum(['remote', 'on-site', 'hybrid'], {
+  workType: z.enum(Constants.public.Enums.work_type, {
     error: 'Work type is required',
   }),
 
@@ -28,12 +29,7 @@ export const newJobSchema = z.object({
     .min(50, 'Description must be at least 50 characters')
     .max(5000, 'Description must be less than 5000 characters'),
 
-  skills: z
-    .array(z.string())
-    .min(1, 'At least one skill is required')
-    .max(20, 'Maximum 20 skills allowed'),
-
-  jobLevel: z.enum(['entry-level', 'junior', 'mid-level', 'senior'], {
+  jobLevel: z.enum(Constants.public.Enums.job_level, {
     error: 'Job level is required',
   }),
 });
