@@ -16,22 +16,24 @@ interface getJobsParams {
 }
 
 export interface GetJobsResponse {
-  jobs: Array<{
-    id: string;
-    title: string;
-    description?: string;
-    location: string;
-    salary?: number;
-    job_level: Enums<'job_level'>;
-    job_type: Enums<'job_type'>;
-    work_type: Enums<'work_type'>;
-    created_at: string;
-    updated_at: string;
-    employer_id: string;
-    employers: {
-      company_name: string;
-    } | null;
-  }> | [];
+  jobs:
+    | Array<{
+        id: string;
+        title: string;
+        description?: string;
+        location: string;
+        salary?: number;
+        job_level: Enums<'job_level'>;
+        job_type: Enums<'job_type'>;
+        work_type: Enums<'work_type'>;
+        created_at: string;
+        updated_at: string;
+        employer_id: string;
+        employers: {
+          company_name: string;
+        } | null;
+      }>
+    | [];
   page: number;
   limit: number;
   total: number;
@@ -85,7 +87,7 @@ export const getJobs = async (
   }
 
   return {
-    jobs: jobs as GetJobsResponse['jobs'] || [],
+    jobs: (jobs as GetJobsResponse['jobs']) || [],
     page,
     limit,
     total: jobs.length, // This should ideally be the total count from a separate query

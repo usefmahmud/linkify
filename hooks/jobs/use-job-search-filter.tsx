@@ -27,7 +27,6 @@ export const useJobSearchFilter = () => {
   const [salaryMin, setSalaryMin] = useQueryState('salaryMin', parseAsInteger);
   const [salaryMax, setSalaryMax] = useQueryState('salaryMax', parseAsInteger);
 
-  // Get all filters as a single object
   const filters: JobSearchFilters = {
     page,
     limit,
@@ -53,10 +52,11 @@ export const useJobSearchFilter = () => {
   };
 
   // Update filters and reset pagination
-  const updateFiltersWithPageReset = (newFilters: Partial<Omit<JobSearchFilters, 'page'>>) => {
+  const updateFiltersWithPageReset = (
+    newFilters: Partial<Omit<JobSearchFilters, 'page'>>
+  ) => {
     updateFilters({ ...newFilters, page: 1 });
   };
-
 
   const getJobsParams = () => ({
     page: filters.page,
@@ -75,8 +75,6 @@ export const useJobSearchFilter = () => {
         : undefined,
   });
 
-
-
   const setters = {
     setPage,
     setLimit,
@@ -94,7 +92,7 @@ export const useJobSearchFilter = () => {
     updateFilters,
     updateFiltersWithPageReset,
     getJobsParams,
-    
+
     ...setters,
   };
 };

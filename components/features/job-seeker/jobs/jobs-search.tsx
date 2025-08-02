@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   Search,
   MapPin,
@@ -27,6 +27,26 @@ interface JobsSearchProps {
 }
 
 const JobsSearch = ({ filters, updateFilters }: JobsSearchProps) => {
+  const [searchInput, setSearchInput] = useState(filters.search || '');
+
+  const debouncedSearch = useCallback(
+    (() => {
+      let timeoutId: NodeJS.Timeout;
+      return (value: string) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          updateFilters({ search: value || null });
+        }, 300);
+      };
+    })(),
+    [updateFilters]
+  );
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchInput(value);
+    debouncedSearch(value);
+  };
   return (
     <div className='w-full space-y-6 rounded-lg border bg-white p-6 shadow-sm'>
       <div className='flex flex-col gap-4 lg:flex-row'>
@@ -34,8 +54,8 @@ const JobsSearch = ({ filters, updateFilters }: JobsSearchProps) => {
           <Search className='absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400' />
           <Input
             placeholder='Search for jobs...'
-            value={filters.search || ''}
-            onChange={(e) => updateFilters({ search: e.target.value || null })}
+            value={searchInput}
+            onChange={handleSearchChange}
             className='h-12 pl-10 text-base'
           />
         </div>
@@ -60,7 +80,7 @@ const JobsSearch = ({ filters, updateFilters }: JobsSearchProps) => {
             updateFilters({ jobLevel: value === 'all' ? null : value })
           }
         >
-          <SelectTrigger className='w-[140px]'>
+          <SelectTrigger className=''>
             <Briefcase className='mr-2 h-4 w-4' />
             <SelectValue placeholder='Job level' />
           </SelectTrigger>
@@ -79,7 +99,7 @@ const JobsSearch = ({ filters, updateFilters }: JobsSearchProps) => {
             updateFilters({ jobType: value === 'all' ? null : value })
           }
         >
-          <SelectTrigger className='w-[130px]'>
+          <SelectTrigger className=''>
             <Building className='mr-2 h-4 w-4' />
             <SelectValue placeholder='Job type' />
           </SelectTrigger>
@@ -98,7 +118,7 @@ const JobsSearch = ({ filters, updateFilters }: JobsSearchProps) => {
             updateFilters({ workType: value === 'all' ? null : value })
           }
         >
-          <SelectTrigger className='w-[120px]'>
+          <SelectTrigger className=''>
             <SelectValue placeholder='Work type' />
           </SelectTrigger>
           <SelectContent>

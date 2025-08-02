@@ -5,13 +5,9 @@ export const jobSearchParamsSchema = {
   page: parseAsInteger.withDefault(1),
   limit: parseAsInteger.withDefault(20),
   search: parseAsString.withDefault(''),
-  jobLevel: parseAsStringEnum([
-    ...Constants.public.Enums.job_level,
-  ]),
+  jobLevel: parseAsStringEnum([...Constants.public.Enums.job_level]),
   jobType: parseAsStringEnum([...Constants.public.Enums.job_type]),
-  workType: parseAsStringEnum([
-    ...Constants.public.Enums.work_type,
-  ]),
+  workType: parseAsStringEnum([...Constants.public.Enums.work_type]),
   location: parseAsString.withDefault(''),
   salaryMin: parseAsInteger,
   salaryMax: parseAsInteger,

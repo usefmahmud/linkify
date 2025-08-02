@@ -4,8 +4,6 @@ import { getJobs, GetJobsResponse } from '@/api/jobs/get-jobs';
 import React, { useEffect, useState } from 'react';
 import JobsSearch from './jobs-search';
 import JobsList from './jobs-list';
-import { useQueryStates } from 'nuqs';
-import { jobSearchParamsSchema } from '@/types/job-search';
 import { useJobSearchFilter } from '@/hooks/jobs/use-job-search-filter';
 
 const JobsView = () => {
