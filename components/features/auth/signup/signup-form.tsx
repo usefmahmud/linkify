@@ -47,7 +47,7 @@ const SignupForm = () => {
   return (
     <div>
       <h1 className='mb-8 text-center text-2xl font-bold'>
-        Sign Up to <b className='text-violet-800'>Linkify</b>
+        Sign Up to <b className='text-primary'>Linkify</b>
       </h1>
 
       <Form {...form}>
@@ -55,7 +55,7 @@ const SignupForm = () => {
           onSubmit={form.handleSubmit(handleFormSubmit)}
           className='flex flex-col gap-6'
         >
-          <div className='flex items-start gap-4'>
+          <div className='flex items-start gap-4 *:flex-1'>
             <FormField
               control={form.control}
               name='firstName'
@@ -134,8 +134,8 @@ const SignupForm = () => {
           <div className='flex gap-4'>
             <div
               className={cn(
-                'flex flex-1 cursor-pointer flex-col items-center justify-center gap-2 rounded-md border p-6 text-gray-500 transition-colors duration-100',
-                selectedRole === 'job-seeker' && 'border-black text-black'
+                'flex flex-1 cursor-pointer flex-col items-center justify-center gap-2 rounded-md border p-6 text-muted-foreground transition-colors duration-100',
+                selectedRole === 'job-seeker' && 'border-primary text-primary'
               )}
               onClick={() => setSelectedRole('job-seeker')}
               role='button'
@@ -146,8 +146,8 @@ const SignupForm = () => {
 
             <div
               className={cn(
-                'flex flex-1 cursor-pointer flex-col items-center justify-center gap-2 rounded-md border p-6 text-gray-500 transition-colors duration-100',
-                selectedRole === 'employer' && 'border-black text-black'
+                'flex flex-1 cursor-pointer flex-col items-center justify-center gap-2 rounded-md border p-6 text-muted-foreground transition-colors duration-100',
+                selectedRole === 'employer' && 'border-primary text-primary'
               )}
               onClick={() => setSelectedRole('employer')}
               role='button'

@@ -7,7 +7,7 @@ const Navbar = () => {
     <div className='bg-muted/20 box-shadow absolute top-6 z-50 flex w-full max-w-6xl items-center justify-between rounded-full p-2 px-3 shadow-md backdrop-blur-sm'>
       <Link
         href='/'
-        className='cursor-pointer px-4 text-xl font-extrabold select-none'
+        className='cursor-pointer px-4 text-xl font-extrabold text-primary select-none'
       >
         Linkify
       </Link>

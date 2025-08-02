@@ -16,10 +16,8 @@ import { loginSchema, LoginSchema } from '@/schemas/auth/login.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 
 const Login = () => {
   const form = useForm<LoginSchema>({
@@ -31,14 +29,14 @@ const Login = () => {
   });
 
   const handleFormSubmit = async (credentials: LoginSchema) => {
-    const user = await login(credentials);
+    await login(credentials);
   };
 
   return (
     <div className='flex w-full max-w-lg flex-col gap-4'>
-      <div className='bg-muted/20 rounded-md p-6 box-shadow'>
+      <div className='bg-muted/20 box-shadow rounded-md p-6'>
         <h1 className='mb-8 text-center text-2xl font-bold'>
-          Login to <b className='text-violet-800'>Linkify</b>
+          Login to <b className='text-primary'>Linkify</b>
         </h1>
 
         <Form {...form}>
