@@ -2,6 +2,7 @@ import React from 'react';
 import { MapPin, Briefcase, Building2, Bookmark } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { GetJobsResponse } from '@/api/jobs/get-jobs';
+import Link from 'next/link';
 
 interface JobCardProps {
   job: GetJobsResponse['jobs'][0];
@@ -26,27 +27,29 @@ const JobCard = ({ job }: JobCardProps) => {
     return type.charAt(0).toUpperCase() + type.slice(1);
   };
 
-
   return (
-    <div className='w-full max-w-6xl cursor-pointer overflow-hidden rounded-lg border bg-white p-6  transition-shadow hover:shadow-md'>
+    <Link
+      href={`/jobs/${job.id}`}
+      className='w-full max-w-6xl cursor-pointer overflow-hidden rounded-lg border bg-white p-6 transition-shadow hover:shadow-md'
+    >
       <div className='flex items-start justify-between'>
         <div className='flex items-start space-x-4'>
-          <div className='flex h-12 w-12 items-center justify-center rounded-lg bg-primary text-sm font-semibold text-white'>
+          <div className='bg-primary flex h-12 w-12 items-center justify-center rounded-lg text-sm font-semibold text-white'>
             <Building2 />
           </div>
 
           <div className='flex flex-1 flex-col gap-2'>
             <div>
-              <div className='text-sm font-medium text-secondary-foreground'>
+              <div className='text-secondary-foreground text-sm font-medium'>
                 {job.employers?.company_name || 'Company Name'}
               </div>
 
-              <h3 className='line-clamp-1 text-lg font-semibold '>
+              <h3 className='line-clamp-1 text-lg font-semibold'>
                 {job.title}
               </h3>
             </div>
 
-            <div className='flex flex-wrap items-center gap-4 text-sm text-accent-foreground'>
+            <div className='text-accent-foreground flex flex-wrap items-center gap-4 text-sm'>
               <div className='flex items-center gap-1'>
                 <MapPin className='h-4 w-4' />
                 <span>{job.location}</span>
@@ -80,7 +83,7 @@ const JobCard = ({ job }: JobCardProps) => {
             </div>
 
             {job.description && (
-              <p className='mt-2 line-clamp-2 text-sm text-accent-foreground'>
+              <p className='text-accent-foreground mt-2 line-clamp-2 text-sm'>
                 {job.description}
               </p>
             )}
@@ -91,7 +94,7 @@ const JobCard = ({ job }: JobCardProps) => {
           <Bookmark className='h-5 w-5 text-gray-400 hover:text-gray-600' />
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

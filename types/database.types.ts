@@ -17,23 +17,23 @@ export type Database = {
     Tables: {
       applications: {
         Row: {
-          applied_at: string
-          id: number
-          job_id: number
+          created_at: string
+          id: string
+          job_id: string
           seeker_profile_id: string
           status: Database["public"]["Enums"]["application_status"]
         }
         Insert: {
-          applied_at?: string
-          id?: number
-          job_id: number
-          seeker_profile_id: string
-          status?: Database["public"]["Enums"]["application_status"]
+          created_at?: string
+          id?: string
+          job_id?: string
+          seeker_profile_id?: string
+          status: Database["public"]["Enums"]["application_status"]
         }
         Update: {
-          applied_at?: string
-          id?: number
-          job_id?: number
+          created_at?: string
+          id?: string
+          job_id?: string
           seeker_profile_id?: string
           status?: Database["public"]["Enums"]["application_status"]
         }
@@ -97,17 +97,17 @@ export type Database = {
       }
       employers: {
         Row: {
-          company_name: string
+          company_name: string | null
           created_at: string
           profile_id: string
         }
         Insert: {
-          company_name: string
+          company_name?: string | null
           created_at?: string
           profile_id: string
         }
         Update: {
-          company_name?: string
+          company_name?: string | null
           created_at?: string
           profile_id?: string
         }
@@ -185,42 +185,12 @@ export type Database = {
           },
         ]
       }
-      job_skills: {
-        Row: {
-          job_id: number
-          skill_id: number
-        }
-        Insert: {
-          job_id: number
-          skill_id: number
-        }
-        Update: {
-          job_id?: number
-          skill_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "job_skills_job_id_fkey"
-            columns: ["job_id"]
-            isOneToOne: false
-            referencedRelation: "jobs"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "job_skills_skill_id_fkey"
-            columns: ["skill_id"]
-            isOneToOne: false
-            referencedRelation: "skills"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       jobs: {
         Row: {
           created_at: string
           description: string
           employer_profile_id: string
-          id: number
+          id: string
           job_level: Database["public"]["Enums"]["job_level"]
           job_type: Database["public"]["Enums"]["job_type"]
           location: string
@@ -233,7 +203,7 @@ export type Database = {
           created_at?: string
           description: string
           employer_profile_id: string
-          id?: number
+          id?: string
           job_level: Database["public"]["Enums"]["job_level"]
           job_type: Database["public"]["Enums"]["job_type"]
           location: string
@@ -246,7 +216,7 @@ export type Database = {
           created_at?: string
           description?: string
           employer_profile_id?: string
-          id?: number
+          id?: string
           job_level?: Database["public"]["Enums"]["job_level"]
           job_type?: Database["public"]["Enums"]["job_type"]
           location?: string
