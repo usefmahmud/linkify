@@ -22,7 +22,7 @@ import { Badge } from '@/components/ui/badge';
 import { GetJobByIdResponse } from '@/api/jobs/get-job-by-id';
 import { useRouter } from 'next/navigation';
 import { Separator } from '@/components/ui/separator';
-import { applyJob } from '@/api/jobs/apply-job';
+import { applyJob } from '@/api/applications/apply-job';
 import { is } from 'zod/v4/locales';
 import { cn } from '@/lib/utils';
 

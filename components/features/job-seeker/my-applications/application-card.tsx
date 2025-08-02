@@ -8,7 +8,7 @@ import {
   CircleDollarSign,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { ApplicationWithJob } from '@/api/jobs/get-my-applications';
+import { ApplicationWithJob } from '@/api/applications/get-my-applications';
 import Link from 'next/link';
 
 interface ApplicationCardProps {

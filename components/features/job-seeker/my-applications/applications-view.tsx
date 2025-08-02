@@ -4,7 +4,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import {
   getMyApplications,
   ApplicationWithJob,
-} from '@/api/jobs/get-my-applications';
+} from '@/api/applications/get-my-applications';
 import { useApplicationFilter } from '@/hooks/applications/use-application-filter';
 import ApplicationsFilter from './applications-filter';
 import ApplicationsList from './applications-list';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApplicationWithJob } from '@/api/jobs/get-my-applications';
+import { ApplicationWithJob } from '@/api/applications/get-my-applications';
 import ApplicationCard from './application-card';
 import { Skeleton } from '@/components/ui/skeleton';
 import ApplicationsSkeleton from './applications-skeleton';
