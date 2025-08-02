@@ -1,5 +1,6 @@
-import { createClient } from '@/utils/supabase/client';
+import { createClient } from '@/utils/supabase/server';
 import { Enums } from '@/types/database.types';
+import toast from 'react-hot-toast';
 
 export interface GetJobByIdResponse {
   id: string;
@@ -13,6 +14,8 @@ export interface GetJobByIdResponse {
   created_at: string;
   updated_at: string;
   employer_profile_id: string;
+  isApplied: boolean;
+  status: Enums<'application_status'>;
   employers: {
     company_name: string | null;
   } | null;
@@ -23,6 +26,16 @@ export const getJobById = async (
 ): Promise<GetJobByIdResponse | null> => {
   const supabase = await createClient();
 
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session?.user) {
+    return null;
+  }
+
+  const userId = session.user.id;
+
   try {
     const { data, error } = await supabase
       .from('jobs')
@@ -31,6 +44,10 @@ export const getJobById = async (
         *,
         employers (
           company_name
+        ),
+        applications (
+          id,
+          status
         )
       `
       )
@@ -42,7 +59,15 @@ export const getJobById = async (
       return null;
     }
 
-    return data;
+    const isApplied = data.applications.length > 0;
+
+    const { applications, ...jobData } = data;
+
+    return {
+      ...jobData,
+      isApplied,
+      status: applications?.[0]?.status || null,
+    };
   } catch (error) {
     console.error('Error in getJobById:', error);
     return null;

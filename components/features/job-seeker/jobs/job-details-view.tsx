@@ -15,6 +15,7 @@ import {
   Share2,
   CheckCircle,
   Loader2,
+  X,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -23,14 +24,16 @@ import { useRouter } from 'next/navigation';
 import { Separator } from '@/components/ui/separator';
 import { applyJob } from '@/api/jobs/apply-job';
 import { is } from 'zod/v4/locales';
+import { cn } from '@/lib/utils';
 
 interface JobDetailsViewProps {
   job: GetJobByIdResponse;
 }
 
 const JobDetailsView = ({ job }: JobDetailsViewProps) => {
+  console.log(job);
   const router = useRouter();
-  const [isApplied, setIsApplied] = useState(false);
+  const [isApplied, setIsApplied] = useState(job.isApplied);
   const [isApplying, setIsApplying] = useState(false);
 
   const formatJobLevel = (level: string) => {
@@ -74,7 +77,7 @@ const JobDetailsView = ({ job }: JobDetailsViewProps) => {
       <div className='px-4 py-4'>
         <Button
           variant='ghost'
-          onClick={() => router.back()}
+          onClick={() => router.push('/jobs')}
           className='flex items-center gap-2 text-sm text-gray-600'
         >
           <ArrowLeft className='h-4 w-4' />
@@ -141,25 +144,40 @@ const JobDetailsView = ({ job }: JobDetailsViewProps) => {
                 </div>
               </div>
 
-              <Button
-                onClick={handleApplyJob}
-                disabled={isApplied}
-                className='mt-4 flex gap-2'
-              >
-                {isApplied ? (
-                  <>
-                    <span>Applied</span>
-                    <CheckCircle className='h-4 w-4' />
-                  </>
-                ) : (
-                  <span>
-                    Apply now{' '}
-                    {isApplying && (
-                      <Loader2 className='animated-spin h-4 w-4' />
-                    )}
-                  </span>
-                )}
-              </Button>
+              {!isApplied && (
+                <Button onClick={handleApplyJob} className='mt-4 flex gap-2'>
+                  Apply now
+                  {isApplying && <Loader2 className='animated-spin h-4 w-4' />}
+                </Button>
+              )}
+
+              {isApplied && (
+                <Button
+                  disabled
+                  className={cn('mt-4 flex gap-2', {
+                    'bg-destructive': job.status === 'rejected',
+                    'bg-green-700': job.status === 'accepted',
+                  })}
+                >
+                  {(job.status === 'pending' || !job.status) && (
+                    <>
+                      Applied <CheckCircle className='h-4 w-4' />
+                    </>
+                  )}
+
+                  {job.status === 'accepted' && (
+                    <>
+                      Accepted <CheckCircle className='h-4 w-4' />
+                    </>
+                  )}
+
+                  {job.status === 'rejected' && (
+                    <>
+                      Rejected <X className='h-4 w-4' />
+                    </>
+                  )}
+                </Button>
+              )}
             </div>
 
             <div className='flex justify-center gap-4'>
