@@ -41,6 +41,7 @@ const SignupForm = () => {
 
   const handleFormSubmit = async (data: SignupSchema) => {
     const user = await signup(data, selectedRole);
+    
     console.log(user);
   };
 

@@ -2,6 +2,7 @@ import { SignupSchema } from '@/schemas/auth/signup.schema';
 import { userRole } from '@/types/user';
 import toast from 'react-hot-toast';
 import { createClient } from '@/utils/supabase/client';
+import { redirect } from 'next/navigation';
 
 export const signup = async (credentials: SignupSchema, role: userRole) => {
   const supabase = await createClient();
@@ -23,22 +24,23 @@ export const signup = async (credentials: SignupSchema, role: userRole) => {
     return;
   }
 
-  if (data) {
-    const { error } = await supabase.from('profiles').insert({
-      id: data.user?.id,
-      first_name: credentials.firstName,
-      last_name: credentials.lastName,
-      role: role,
-    });
+  // if (data) {
+  //   const { error } = await supabase.from('profiles').insert({
+  //     id: data.user?.id,
+  //     first_name: credentials.firstName,
+  //     last_name: credentials.lastName,
+  //     role: role,
+  //   });
 
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
-  }
+  //   if (error) {
+  //     toast.error(error.message);
+  //     return;
+  //   }
+  // }
 
   toast.success(
     'Account created successfully! Please check your email to verify your account.'
   );
+  redirect('/auth/login');
   return data;
 };
