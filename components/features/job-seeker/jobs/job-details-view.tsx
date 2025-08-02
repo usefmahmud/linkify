@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ArrowLeft,
   MapPin,
@@ -13,12 +13,16 @@ import {
   Bookmark,
   Share,
   Share2,
+  CheckCircle,
+  Loader2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { GetJobByIdResponse } from '@/api/jobs/get-job-by-id';
 import { useRouter } from 'next/navigation';
 import { Separator } from '@/components/ui/separator';
+import { applyJob } from '@/api/jobs/apply-job';
+import { is } from 'zod/v4/locales';
 
 interface JobDetailsViewProps {
   job: GetJobByIdResponse;
@@ -26,6 +30,8 @@ interface JobDetailsViewProps {
 
 const JobDetailsView = ({ job }: JobDetailsViewProps) => {
   const router = useRouter();
+  const [isApplied, setIsApplied] = useState(false);
+  const [isApplying, setIsApplying] = useState(false);
 
   const formatJobLevel = (level: string) => {
     return level
@@ -51,6 +57,16 @@ const JobDetailsView = ({ job }: JobDetailsViewProps) => {
       month: 'long',
       day: 'numeric',
     }).format(new Date(dateString));
+  };
+
+  const handleApplyJob = async () => {
+    if (isApplied) return;
+    setIsApplying(true);
+    const data = await applyJob(job.id);
+    if (data) {
+      setIsApplied(true);
+    }
+    setIsApplying(false);
   };
 
   return (
@@ -125,7 +141,25 @@ const JobDetailsView = ({ job }: JobDetailsViewProps) => {
                 </div>
               </div>
 
-              <Button className='w-full'>Apply now</Button>
+              <Button
+                onClick={handleApplyJob}
+                disabled={isApplied}
+                className='mt-4 flex gap-2'
+              >
+                {isApplied ? (
+                  <>
+                    <span>Applied</span>
+                    <CheckCircle className='h-4 w-4' />
+                  </>
+                ) : (
+                  <span>
+                    Apply now{' '}
+                    {isApplying && (
+                      <Loader2 className='animated-spin h-4 w-4' />
+                    )}
+                  </span>
+                )}
+              </Button>
             </div>
 
             <div className='flex justify-center gap-4'>
