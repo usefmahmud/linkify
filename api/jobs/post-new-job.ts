@@ -6,10 +6,10 @@ export const postNewJob = async (data: NewJobSchema) => {
   const supabase = await createClient();
 
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { session },
+  } = await supabase.auth.getSession();
 
-  if (!user) {
+  if (!session) {
     toast.error('You must be logged in to post a job.');
     return;
   }
@@ -19,7 +19,7 @@ export const postNewJob = async (data: NewJobSchema) => {
     .insert({
       title: data.jobTitle,
       description: data.description,
-      employer_profile_id: user.id,
+      employer_profile_id: session.user.id,
       job_level: data.jobLevel,
       job_type: data.jobType,
       work_type: data.workType,
