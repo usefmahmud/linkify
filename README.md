@@ -29,6 +29,7 @@ Job Seeker features:
 ## Screenshots
 
 ![Linkify Landing Page](/public/screenshots/screenshot1.png)
+![Linkify Singup Page](/public/screenshots/screenshot8.png)
 ![Linkify Job Listings](/public/screenshots/screenshot2.png)
 ![Linkify Job Details](/public/screenshots/screenshot3.png)
 ![Linkify Application Status](/public/screenshots/screenshot4.png)
