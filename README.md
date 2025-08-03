@@ -22,6 +22,8 @@ Job Seeker features:
 - Apply for jobs using his profile information.
 - View applied jobs and their status.
 
+This was a challenge to complete in 24 hours. Although the 24 hours are up, these are the only features I’ve completed so far, and I’ll pause here.
+
 ## Database Schema
 
 ![Supabase Database Schema](/public/screenshots/supabase-schema.png)
